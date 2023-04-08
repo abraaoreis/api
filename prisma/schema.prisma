@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @default(autoincrement()) @id @unique
+  username String? @db.VarChar(50)
+  email String?  @db.VarChar(80)
+  name  String?
+  address Address?
+  trips Trip[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  lastLogin DateTime
+}
+
+model Address {
+  user User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+  city String
+  state String
+  country String
+  street String
+  postalCode String
+}
+
+model Trip {
+  id Int @default(autoincrement()) @id @unique
+  user User @relation(fields: [userId],references: [id])
+  userId Int
+  plans Plan[]
+  city String
+  state String?
+  country String
+  numDays Int?
+  budget Float?
+  currency String?
+  startDate DateTime?
+  endDate DateTime?
+  createAt DateTime @default(now())
+}
+
+model Plan {
+   id Int @default(autoincrement()) @id @unique
+   trip Trip @relation(fields: [tripId],references: [id])
+   tripId Int
+   destinations Destination[]
+   startDate DateTime
+   endDate DateTime
+}
+
+model Destination {
+  id Int @default(autoincrement()) @id @unique
+  Plan Plan @relation(fields: [planId],references: [id])
+  planId Int
+  name String
+  day Int
+  cost Float
+  coordinateX String 
+  coordinateY String
+  location String
+  startDate DateTime
+  endDate DateTime
+}
+
+model Currency {
+  code String @unique
+  symbol String
+}
