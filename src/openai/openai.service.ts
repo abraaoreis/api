@@ -15,7 +15,7 @@ export class OpenaiService {
   async createCompletion(data: CreateCompletionTripDto) {
     try {
       const response = await this.openai.createCompletion(data);
-      return response.data;
+      return response.data.choices[0].text;
     } catch (error) {
       throw new HttpException(
         {
