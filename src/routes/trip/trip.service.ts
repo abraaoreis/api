@@ -1,4 +1,4 @@
-import { CreateTripDto } from './DTO/trip.dto';
+import { CreateTripDto } from './dto/trip.dto';
 import { Injectable } from '@nestjs/common';
 import { Prisma, Trip } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
